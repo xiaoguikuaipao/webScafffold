@@ -9,6 +9,7 @@ import (
 	"syscall"
 	"time"
 
+	"web_app/controller"
 	"web_app/dao/mysql"
 	"web_app/dao/redis"
 	"web_app/logger"
@@ -45,7 +46,11 @@ func main() {
 	}
 	defer redis.Close()
 
-	//5. register the router
+	//5. register the router (Gin framework)
+	if err := controller.InitTrans("zh"); err != nil {
+		fmt.Printf("init transalator failed, err: %v\n", err)
+		return
+	}
 	r := routes.Setup()
 
 	//6. elegantly quits
